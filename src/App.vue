@@ -1,28 +1,48 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 d-fex justify-content-center">
+        <q-category
+          v-if="!isCategorySelected"
+          @categorySelected="categorySelected"
+        ></q-category>
+        <q-question-grid
+          v-else
+          :category="categoryValue"
+          @startNewQuiz="startNewQuiz"
+        ></q-question-grid>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Category from "./components/Category.vue";
+import QuestionGrid from "./components/QuestionGrid.vue";
 export default {
-  name: 'App',
   components: {
-    HelloWorld
-  }
-}
+    qCategory: Category,
+    qQuestionGrid: QuestionGrid,
+  },
+  data() {
+    return {
+      isCategorySelected: false,
+      categoryValue: -1,
+      questions: [],
+    };
+  },
+  methods: {
+    categorySelected(value) {
+      this.isCategorySelected = true;
+      this.categoryValue = value.category;
+    },
+    startNewQuiz() {
+      this.isCategorySelected = false;
+      this.questions = [];
+      this.categoryValue = -1;
+    },
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style scoped></style>
